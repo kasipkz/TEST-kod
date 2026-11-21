@@ -1,34 +1,164 @@
-      time.textContent = '00:00';
-    });
 
-    video.addEventListener('timeupdate', function() {
-      // update the time display with the current time of the video
-      var minutes = Math.floor(video.currentTime / 60);
-      var seconds = Math.floor(video.currentTime % 60);
-      if (minutes < 10) minutes = '0' + minutes;
-      if (seconds < 10) seconds = '0' + seconds;
-      time.textContent = minutes + ':' + seconds;
-    });
-
-  </script>
-
-</body>
-
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Virtual Office</title>
 <style>
-
-/* style your elements here */
-
-#video {
-  width: 400px;
-}
-
-#time {
-  font-family: monospace;
-}
-
+*{box-sizing:border-box}
+body{margin:0;background:#101827;color:white;font-family:Arial,sans-serif}
+header{padding:22px;background:#192438;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap}
+h1{font-size:22px;margin:0}
+main{padding:20px;max-width:1100px;margin:auto}
+.stats,.agents{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:15px}
+.card{background:#1d2b40;padding:20px;border-radius:15px;margin-bottom:15px}
+.number{font-size:28px;font-weight:bold;margin-top:10px}
+.agent{text-align:center}
+.avatar{font-size:55px}
+.status{color:#63dfa2;font-size:13px}
+button{background:#4c82f5;color:white;border:0;padding:12px 17px;border-radius:9px;cursor:pointer;margin:4px}
+input,select{background:#101827;color:white;padding:12px;border:1px solid #40516b;border-radius:8px;width:100%;margin:6px 0}
+table{width:100%;border-collapse:collapse}
+td,th{text-align:left;padding:12px;border-bottom:1px solid #40516b}
+.table-wrap{overflow-x:auto}
+.small{color:#a9b8cb;font-size:13px}
 </style>
+</head>
+<body>
+<header>
+  <h1>🏢 AI VIRTUAL OFFICE</h1>
+  <span>Тойға Ерекше Шақырту</span>
+</header>
+<main>
+<h2>Басқару панелі</h2>
+<div class="stats">
+ <div class="card">👥 Клиенттер<div class="number" id="clients">0</div></div>
+ <div class="card">💬 Қызығушылар<div class="number" id="interested">0</div></div>
+ <div class="card">🛒 Сатылым<div class="number" id="sales">0</div></div>
+ <div class="card">💰 Түсім<div class="number" id="income">0 ₸</div></div>
+</div>
 
+<h2>Біздің AI қызметкерлер</h2>
+<div class="agents">
+ <div class="card agent">
+  <div class="avatar">👩🏻‍💻</div>
+  <h3>Айдана</h3><p>Клиент іздеуші</p>
+  <div class="status">● Жұмысқа дайын</div>
+ </div>
+ <div class="card agent">
+  <div class="avatar">🤵🏻</div>
+  <h3>Данияр</h3><p>Сату менеджері</p>
+  <div class="status">● Жұмысқа дайын</div>
+ </div>
+ <div class="card agent">
+  <div class="avatar">👩🏻‍💼</div>
+  <h3>Меруерт</h3><p>Бас менеджер</p>
+  <div class="status">● Жұмысқа дайын</div>
+ </div>
+</div>
+
+<h2>➕ Жаңа клиент қосу</h2>
+<div class="card">
+ <input id="name" placeholder="Клиенттің аты">
+ <input id="contact" placeholder="Телефон немесе Instagram">
+ <select id="event">
+  <option>Үйлену тойы</option>
+  <option>Қыз ұзату</option>
+  <option>Сүндет той</option>
+  <option>Бесік той</option>
+  <option>Мерейтой</option>
+ </select>
+ <select id="tariff">
+  <option value="3000">ҚОЛА — 3000 ₸</option>
+  <option value="5000" selected>КҮМІС — 5000 ₸</option>
+  <option value="10000">АЛТЫН — 10000 ₸</option>
+ </select>
+ <button onclick="addClient()">Клиентті сақтау</button>
+</div>
+
+<h2>📋 Клиенттер базасы</h2>
+<div class="card table-wrap">
+<table>
+<thead><tr><th>Клиент</th><th>Той түрі</th><th>Тариф</th><th>Статус</th></tr></thead>
+<tbody id="list"></tbody>
+</table>
+</div>
+
+<h2>🤖 AI тапсырмалары</h2>
+<div class="card">
+ <select id="agent">
+  <option>Айдана</option>
+  <option>Данияр</option>
+  <option>Меруерт</option>
+ </select>
+ <input id="task" placeholder="Тапсырма жаз...">
+ <button onclick="assignTask()">Тапсырма беру</button>
+ <div id="tasks"></div>
+ <p class="small">Ескерту: бұл нұсқа тапсырмаларды тіркейді, AI агенттерді іске қоспайды.</p>
+</div>
+</main>
+
+<script>
+let clients=JSON.parse(localStorage.getItem("clients")||"[]");
+let tasks=JSON.parse(localStorage.getItem("tasks")||"[]");
+
+function save(){
+ localStorage.setItem("clients",JSON.stringify(clients));
+ localStorage.setItem("tasks",JSON.stringify(tasks));
+ render();
+}
+function addClient(){
+ let name=document.getElementById("name").value.trim();
+ let contact=document.getElementById("contact").value.trim();
+ if(!name){alert("Клиенттің атын енгіз!");return}
+ clients.push({
+  name,contact,
+  event:document.getElementById("event").value,
+  price:Number(document.getElementById("tariff").value),
+  status:"Жаңа клиент"
+ });
+ document.getElementById("name").value="";
+ document.getElementById("contact").value="";
+ save();
+}
+function assignTask(){
+ let agent=document.getElementById("agent").value;
+ let task=document.getElementById("task").value.trim();
+ if(!task)return;
+ tasks.push({agent,task});
+ document.getElementById("task").value="";
+ save();
+}
+function render(){
+ document.getElementById("clients").textContent=clients.length;
+ document.getElementById("interested").textContent=
+ clients.filter(x=>x.status==="Қызығушылық бар").length;
+ let sold=clients.filter(x=>x.status==="Төленді");
+ document.getElementById("sales").textContent=sold.length;
+ document.getElementById("income").textContent=
+ sold.reduce((s,x)=>s+x.price,0).toLocaleString("kk-KZ")+" ₸";
+ document.getElementById("list").innerHTML=clients.map((x,i)=>
+ `<tr><td>${escapeHTML(x.name)}<br><small>${escapeHTML(x.contact)}</small></td>
+ <td>${escapeHTML(x.event)}</td>
+ <td>${x.price.toLocaleString("kk-KZ")} ₸</td>
+ <td><select onchange="changeStatus(${i},this.value)">
+ ${["Жаңа клиент","Қызығушылық бар","Ұсыныс жіберілді","Төленді","Бас тартты"].map(s=>
+ `<option ${x.status===s?"selected":""}>${s}</option>`).join("")}
+ </select></td></tr>`).join("");
+ document.getElementById("tasks").innerHTML=tasks.map(x=>
+ `<p>👤 ${escapeHTML(x.agent)} — ${escapeHTML(x.task)}</p>`).join("");
+}
+function escapeHTML(s){
+ return String(s).replace(/[&<>"']/g,c=>({
+ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+ }[c]));
+}
+function changeStatus(i,status){
+ clients[i].status=status;
+ save();
+}
+render();
+</script>
+</body>
 </html>
-
-
-
