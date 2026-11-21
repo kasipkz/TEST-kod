@@ -1,334 +1,200 @@
-
 <!DOCTYPE html>
 <html lang="kk">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AI Virtual Office</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Qosshy Joly - Виртуалды Сату Кеңсесі</title>
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#101522;color:#fff;font-family:Arial,sans-serif}
-header{padding:18px 22px;background:#192438;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-header h2{margin:0;font-size:20px}
-.online{color:#70e5a5;font-size:12px}
-nav{display:flex;gap:8px;flex-wrap:wrap}
-button{border:0;border-radius:9px;padding:11px 15px;background:#315ee8;color:white;cursor:pointer}
-button:hover{filter:brightness(1.15)}
-button.secondary{background:#334155}
-button.active{background:#426eff}
-main{max-width:1200px;margin:auto;padding:20px}
-.page{display:none}
-.page.active{display:block}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}
-.card{background:#1d293d;border:1px solid #34445d;border-radius:14px;padding:16px}
-.stat-number{font-size:26px;font-weight:bold;margin-top:10px}
-.muted{color:#a8b8ce;font-size:13px}
-.office{
- position:relative;overflow:hidden;min-height:480px;
- border-radius:20px;border:1px solid #52647c;
- background:
- linear-gradient(90deg,transparent 49%,#ffffff0c 50%,transparent 51%),
- linear-gradient(transparent 49%,#ffffff0c 50%,transparent 51%),
- #243b4c;
- background-size:50px 50px;
- perspective:900px;
-}
-.office-title{position:absolute;top:15px;left:18px;z-index:3}
-.floor{
- position:absolute;inset:65px 5% 5%;
- transform:rotateX(12deg) rotateZ(-3deg);
- background:#345064;border:8px solid #526a78;
- border-radius:18px;
- box-shadow:0 25px 35px #0008,inset 0 0 0 3px #8193a0;
-}
-.floor:before{
- content:"";position:absolute;inset:0;
- background:linear-gradient(90deg,transparent 49%,#ffffff12 50%,transparent 51%),
- linear-gradient(transparent 49%,#ffffff12 50%,transparent 51%);
- background-size:55px 55px;
-}
-.desk{
- position:absolute;width:24%;height:145px;
- background:linear-gradient(145deg,#9a704e,#62432f);
- border:4px solid #ba9068;border-radius:9px;
- box-shadow:8px 12px 0 #172b37;
- display:flex;align-items:center;justify-content:center;
- cursor:pointer;transition:.25s;
-}
-.desk:hover{transform:translateY(-9px)}
-.desk.one{left:5%;top:18%}
-.desk.two{left:38%;top:18%}
-.desk.three{left:71%;top:18%}
-.computer{
- width:48px;height:35px;background:#17202b;
- border:4px solid #8397a5;border-radius:5px;
- position:relative;z-index:2;
-}
-.computer:after{
- content:"";position:absolute;width:20px;height:5px;
- background:#8295a0;bottom:-9px;left:10px;
-}
-.person{
- position:absolute;bottom:-28px;left:50%;
- transform:translateX(-50%);
- font-size:65px;filter:drop-shadow(3px 5px 2px #0007);
- animation:bob 2.5s infinite ease-in-out;
-}
-@keyframes bob{
- 0%,100%{transform:translate(-50%,0)}
- 50%{transform:translate(-50%,-5px)}
-}
-.plant{
- position:absolute;bottom:8%;left:8%;font-size:38px
-}
-.window{
- position:absolute;right:7%;bottom:8%;
- background:#17354a;border:5px solid #8da6b5;
- width:23%;height:95px;border-radius:8px;
-}
-.window:before{content:"";position:absolute;left:50%;height:100%;border-left:4px solid #8da6b5}
-.window:after{content:"";position:absolute;top:50%;width:100%;border-top:4px solid #8da6b5}
-.agent-label{
- position:absolute;top:-36px;left:0;right:0;text-align:center;
- font-size:13px;font-weight:bold;color:white;
-}
-.floor-note{
- position:absolute;bottom:12px;left:20px;
- color:#d4e4ef;font-size:12px;
-}
-.agent-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px}
-.agent-card{cursor:pointer;transition:.2s}
-.agent-card:hover{border-color:#658cff;transform:translateY(-3px)}
-.agent-icon{font-size:35px}
-.badge{color:#70e5a5;font-size:12px}
-input,select{width:100%;padding:12px;margin:7px 0;background:#111d2e;color:white;border:1px solid #43546b;border-radius:8px}
-table{width:100%;border-collapse:collapse;min-width:500px}
-td,th{padding:12px;border-bottom:1px solid #3b4c63;text-align:left}
-.scroll{overflow:auto}
-#detail{margin-top:15px}
-.task{padding:10px;background:#26364c;border-radius:8px;margin:8px 0}
-@media(max-width:700px){
- main{padding:12px}
- .stats{grid-template-columns:repeat(2,1fr)}
- .agent-grid{grid-template-columns:1fr}
- .office{min-height:390px}
- .floor{inset:75px 3% 5%}
- .desk{width:27%;height:115px}
- .desk.one{left:3%;top:20%}
- .desk.two{left:36%;top:20%}
- .desk.three{left:69%;top:20%}
- .person{font-size:49px}
- .window{height:65px}
-}
+*{box-sizing:border-box;font-family:sans-serif}
+body{margin:0;background:#FFF8E7;color:#222;padding-bottom:30px}
+header{background:#111;color:#D4AF37;padding:18px;text-align:center}
+header h1{margin:0;font-size:22px}
+header p{margin:4px 0 0;color:#fff;font-size:13px}
+.wrap{max-width:920px;margin:auto;padding:12px}
+h2{font-size:17px;margin:22px 0 10px}
+.card{background:#fff;border-radius:16px;padding:14px;margin-bottom:12px;box-shadow:0 2px 12px #0001}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+@media(max-width:650px){.grid3{grid-template-columns:1fr}}
+.emp{text-align:center;position:relative}
+.avatar{width:90px;height:90px;border-radius:50%;margin:8px auto;display:flex;align-items:center;justify-content:center;font-size:44px;color:#fff}
+.a1{background:linear-gradient(135deg,#FF6B9D,#FF9A8B)}
+.a2{background:linear-gradient(135deg,#4A90D9,#6A5ACD)}
+.a3{background:linear-gradient(135deg,#2ECC71,#1ABC9C)}
+.name{font-weight:900;font-size:16px}
+.role{font-size:12px;color:#777}
+.status{display:inline-block;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:800;margin:8px 0}
+.online{background:#D5F5E3;color:#1E8449}
+.busy{background:#FDEBD0;color:#B9770E}
+.offline{background:#F2F3F4;color:#777}
+.task{font-size:13px;background:#FFF8E7;padding:8px;border-radius:10px;text-align:left}
+input,select,textarea{width:100%;padding:11px;border:1px solid #ddd;border-radius:10px;margin:6px 0}
+button.btn{background:#D4AF37;border:0;padding:12px;border-radius:10px;font-weight:800;cursor:pointer;width:100%}
+button.btn2{background:#111;color:#D4AF37;border:0;padding:10px;border-radius:10px;font-weight:800;cursor:pointer;width:100%;margin-top:6px}
+.kpi{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.kpi div{background:#111;color:#fff;padding:14px;border-radius:14px;text-align:center}
+.kpi b{font-size:20px;color:#D4AF37;display:block}
+.lead{border-left:5px solid #D4AF37}
+.badge{display:inline-block;padding:4px 10px;border-radius:20px;font-size:12px;background:#eee}
+.tarif{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px dashed #eee}
+.tarif b{color:#B7950B}
+.chat{height:220px;overflow:auto;background:#FFF8E7;border-radius:12px;padding:10px}
+.msg{padding:8px 12px;border-radius:12px;margin:6px 0;max-width:88%;font-size:14px}
+.me{background:#D4AF37;color:#fff;margin-left:auto}
+.ai{background:#fff}
 </style>
 </head>
 <body>
-<header>
- <div>
-  <h2>🏢 AI VIRTUAL OFFICE</h2>
-  <span class="online">● Үш қызметкер кеңседе</span>
- </div>
- <nav>
-  <button class="active" onclick="page('office',this)">🏢 Кеңсе</button>
-  <button onclick="page('clients',this)">👥 Клиенттер</button>
-  <button onclick="page('tasks',this)">📋 Тапсырмалар</button>
- </nav>
-</header>
+<header><h1>🏛️ QOSSHY JOLY — ВИРТУАЛДЫ САТУ КЕҢСЕСІ</h1><p>3 қызметкер • 1 ортақ база • Онлайн</p></header>
+<div class="wrap">
 
-<main>
-<section id="office" class="page active">
- <h2>Біздің виртуалды кеңсе</h2>
- <p class="muted">Тойға Ерекше Шақырту — AI сату командасы</p>
-
- <div class="stats">
-  <div class="card">👥 Клиенттер<div class="stat-number" id="total">0</div></div>
-  <div class="card">💬 Қызығушылар<div class="stat-number" id="interested">0</div></div>
-  <div class="card">🛒 Сатылым<div class="stat-number" id="sales">0</div></div>
-  <div class="card">💰 Түсім<div class="stat-number" id="income">0 ₸</div></div>
- </div>
-
- <div class="office">
-  <div class="office-title">
-   <b>🏢 AI SALES DEPARTMENT</b>
-   <div class="muted">Виртуалды жұмыс кеңістігі</div>
+<!-- 1. ҚЫЗМЕТКЕРЛЕР -->
+<h2>👥 1. Виртуалды қызметкерлер</h2>
+<div class="grid3">
+  <div class="card emp">
+    <div class="avatar a1">👩‍💼</div>
+    <div class="name">Айдана</div><div class="role">Клиент іздеу маманы</div>
+    <span class="status online" id="st-aidana">● Желіде</span>
+    <div class="task"><b>Қазіргі тапсырма:</b><br><span id="task-aidana">Жаңа клиенттерді іздеу, Instagram-ға жауап беру</span></div>
+    <select id="sel-aidana"><option>● Желіде</option><option>● Бос емес</option><option>● Желіде жоқ</option></select>
+    <button class="btn2" onclick="setStatus('aidana')">Статусты ауыстыру</button>
   </div>
-  <div class="floor">
-   <div class="desk one" onclick="showAgent('Айдана')">
-    <span class="agent-label">АЙДАНА</span>
-    <div class="computer"></div>
-    <div class="person">👩🏻‍💻</div>
-   </div>
-   <div class="desk two" onclick="showAgent('Данияр')">
-    <span class="agent-label">ДАНИЯР</span>
-    <div class="computer"></div>
-    <div class="person">🤵🏻‍💻</div>
-   </div>
-   <div class="desk three" onclick="showAgent('Меруерт')">
-    <span class="agent-label">МЕРУЕРТ</span>
-    <div class="computer"></div>
-    <div class="person">👩🏻‍💼</div>
-   </div>
-   <div class="plant">🪴</div>
-   <div class="window"></div>
-   <div class="floor-note">AI VIRTUAL OFFICE • 2026</div>
+  <div class="card emp">
+    <div class="avatar a2">🤖</div>
+    <div class="name">Данияр</div><div class="role">Қазақша Сатушы AI</div>
+    <span class="status online" id="st-daniyar">● Желіде</span>
+    <div class="task"><b>Қазіргі тапсырма:</b><br><span id="task-daniyar">Клиенттерге қазақша жауап беру, тариф түсіндіру</span></div>
+    <select id="sel-daniyar"><option>● Желіде</option><option>● Бос емес</option><option>● Желіде жоқ</option></select>
+    <button class="btn2" onclick="setStatus('daniyar')">Статусты ауыстыру</button>
   </div>
- </div>
-
- <div class="agent-grid">
-  <div class="card agent-card" onclick="showAgent('Айдана')">
-   <div class="agent-icon">👩🏻‍💻</div>
-   <h3>Айдана</h3>
-   <p class="muted">Клиент іздеуші</p>
-   <span class="badge">● Дайын</span>
+  <div class="card emp">
+    <div class="avatar a3">📊</div>
+    <div class="name">Меруерт</div><div class="role">Есеп және Аналитика</div>
+    <span class="status busy" id="st-meruert">● Бос емес</span>
+    <div class="task"><b>Қазіргі тапсырма:</b><br><span id="task-meruert">Күндік есеп дайындау, сатылымды санау</span></div>
+    <select id="sel-meruert"><option>● Желіде</option><option>● Бос емес</option><option>● Желіде жоқ</option></select>
+    <button class="btn2" onclick="setStatus('meruert')">Статусты ауыстыру</button>
   </div>
-  <div class="card agent-card" onclick="showAgent('Данияр')">
-   <div class="agent-icon">🤵🏻</div>
-   <h3>Данияр</h3>
-   <p class="muted">Сату менеджері</p>
-   <span class="badge">● Дайын</span>
-  </div>
-  <div class="card agent-card" onclick="showAgent('Меруерт')">
-   <div class="agent-icon">👩🏻‍💼</div>
-   <h3>Меруерт</h3>
-   <p class="muted">Бас менеджер</p>
-   <span class="badge">● Дайын</span>
-  </div>
- </div>
- <div class="card" id="detail" style="display:none"></div>
-</section>
+</div>
 
-<section id="clients" class="page">
- <h2>👥 Клиенттер базасы</h2>
- <div class="card">
-  <input id="clientName" placeholder="Клиенттің аты">
-  <input id="contact" placeholder="Байланыс дерегі">
-  <select id="event">
-   <option>Үйлену тойы</option>
-   <option>Қыз ұзату</option>
-   <option>Сүндет той</option>
-   <option>Бесік той</option>
-   <option>Мерейтой</option>
-  </select>
-  <select id="price">
-   <option value="3000">ҚОЛА — 3000 ₸</option>
-   <option value="5000" selected>КҮМІС — 5000 ₸</option>
-   <option value="10000">АЛТЫН — 10000 ₸</option>
-  </select>
-  <button onclick="addClient()">+ Клиент қосу</button>
- </div>
- <div class="card scroll">
-  <table>
-   <thead><tr><th>Клиент</th><th>Той</th><th>Тариф</th><th>Статус</th></tr></thead>
-   <tbody id="clientList"></tbody>
-  </table>
- </div>
-</section>
+<!-- 2. ТАПСЫРМА БЕРУ -->
+<h2>📋 2. AI қызметкерлерге тапсырма беру</h2>
+<div class="card">
+<select id="taskWho"><option value="aidana">Айданаға</option><option value="daniyar">Даниярға</option><option value="meruert">Меруертке</option></select>
+<input id="taskText" placeholder="Мыс: Бүгін 10 жаңа клиент тап, кешке есеп бер">
+<button class="btn" onclick="giveTask()">Тапсырма беру →</button>
+<p id="taskResult" style="font-size:13px;color:green"></p>
+</div>
 
-<section id="tasks" class="page">
- <h2>📋 Қызметкерлер тапсырмасы</h2>
- <div class="card">
-  <select id="agent">
-   <option>Айдана</option>
-   <option>Данияр</option>
-   <option>Меруерт</option>
-  </select>
-  <input id="taskText" placeholder="Тапсырма енгіз">
-  <button onclick="addTask()">Тапсырма беру</button>
-  <div id="taskList"></div>
- </div>
-</section>
-</main>
+<!-- 3. КҮНДІК ТАБЫС -->
+<h2>💰 3. Күндік табыс көрсеткіші</h2>
+<div class="kpi">
+<div>Бүгінгі клиент<b id="kTotal">0</b></div>
+<div>Төлеген<b id="kPaid">0</b></div>
+<div>Күндік табыс<b id="kMoney">0 ₸</b></div>
+</div>
+<div class="card"><b>📊 Меруерттің автоматты есебі:</b><p id="reportText" style="white-space:pre-line;line-height:1.6;font-size:14px">Жүктелуде...</p>
+<button class="btn" onclick="copyReport()">📋 Есепті көшіру</button></div>
 
-<script>
-let clients=JSON.parse(localStorage.getItem("ai_clients")||"[]");
-let tasks=JSON.parse(localStorage.getItem("ai_tasks")||"[]");
+<!-- 4. ТАРИФТЕР -->
+<h2>💎 4. Тарифтер мен сатылымдар</h2>
+<div class="card">
+<div class="tarif"><span>🥉 ҚОЛА — 3000₸</span><b>Сатылды: <span id="c-bronze">0</span></b></div>
+<div class="tarif"><span>🥈 КҮМІС — 5000₸</span><b>Сатылды: <span id="c-silver">0</span></b></div>
+<div class="tarif"><span>🥇 АЛТЫН — 10000₸</span><b>Сатылды: <span id="c-gold">0</span></b></div>
+</div>
 
-const descriptions={
- Айдана:"Потенциалды клиенттерді іздеу және тізімдеу.",
- Данияр:"Клиенттерге жеке ұсыныстар әзірлеу және сату.",
- Меруерт:"CRM, сатылым және команданың жұмысын бақылау."
+<!-- 5. ДАНИЯР AI ЧАТ -->
+<h2>🤖 5. Данияр — Қазақша Сатушы AI (сынап көр)</h2>
+<div class="card">
+<div class="chat" id="chat"><div class="msg ai">🤖 Данияр: Сәлеметсіз бе! Қандай тойға шақырту іздеп жүрсіз?</div></div>
+<input id="chatInput" placeholder="Жаз: Шақырту қанша тұрады?">
+<button class="btn" onclick="sendAI()">Жіберу</button>
+</div>
+
+<!-- 6. КЛИЕНТТЕР БАЗАСЫ -->
+<h2>👥 6. Клиенттер базасы</h2>
+<div class="card"><h3 style="margin:0">➕ Жаңа клиент қосу</h3>
+<input id="lName" placeholder="Аты-жөні *">
+<input id="lPhone" placeholder="Телефон: 8707...">
+<select id="lSource"><option>Instagram</option><option>WhatsApp</option><option>Тойдан</option><option>Ұсыныс / Сарафан</option></select>
+<select id="lTarif"><option>Қола - 3000₸</option><option>Күміс - 5000₸</option><option>Алтын - 10000₸</option><option>Әлі білмейді</option></select>
+<select id="lStatus"><option>🆕 Жаңа</option><option>💬 Сөйлесіп жатыр</option><option>✅ Төледі</option><option>❌ Бас тартты</option></select>
+<button class="btn" onclick="addLead()">CRM-ге сақтау ✅</button></div>
+<input id="search" placeholder="🔍 Іздеу: аты, телефон..." oninput="render()">
+<div id="leadList"></div>
+
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+const firebaseConfig = {
+  apiKey: "AIzaSyBmuNU_hM7ZwdnpEGt200s_C8HYcwdZsW8",
+  authDomain: "qosshy-joly.firebaseapp.com",
+  databaseURL: "https://qosshy-joly-default-rtdb.firebaseio.com",
+  projectId: "qosshy-joly",
+  storageBucket: "qosshy-joly.firebasestorage.app",
+  messagingSenderId: "43683240461",
+  appId: "1:43683240461:web:a439eab5d26e81b71a5344",
+  measurementId: "G-E17DGS1FPY"
 };
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+let leads=[];
 
-function page(id,btn){
- document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
- document.getElementById(id).classList.add("active");
- document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));
- btn.classList.add("active");
+window.setStatus=(who)=>{
+  const v=document.getElementById('sel-'+who).value;
+  const el=document.getElementById('st-'+who);
+  el.innerText=v; el.className='status '+(v.includes('Желіде')&&!v.includes('жоқ')?'online':v.includes('Бос')?'busy':'offline');
+};
+window.giveTask=()=>{
+  const who=document.getElementById('taskWho').value;
+  const txt=document.getElementById('taskText').value.trim();
+  if(!txt) return alert('Тапсырманы жаз');
+  document.getElementById('task-'+who).innerText=txt;
+  push(ref(db,'tasks'),{who,task:txt,createdAt:Date.now()});
+  document.getElementById('taskResult').innerText='✅ Тапсырма берілді: '+txt;
+  document.getElementById('taskText').value='';
+};
+window.addLead=()=>{
+  const name=document.getElementById('lName').value.trim();
+  if(!name) return alert('Атын жаз');
+  push(ref(db,'leads'),{name,phone:document.getElementById('lPhone').value,source:document.getElementById('lSource').value,tarif:document.getElementById('lTarif').value,status:document.getElementById('lStatus').value,createdAt:Date.now()});
+  document.getElementById('lName').value=''; document.getElementById('lPhone').value='';
+  alert('Сақталды ✅');
+};
+onValue(ref(db,'leads'),snap=>{
+  leads=[]; snap.forEach(c=>leads.push({id:c.key,...c.val()})); leads.reverse(); render(); updateReport();
+});
+window.render=()=>{
+  const q=(document.getElementById('search').value||'').toLowerCase();
+  document.getElementById('leadList').innerHTML=leads.filter(l=>(l.name+l.phone).toLowerCase().includes(q)).map(l=>`<div class="card lead"><b>${l.name}</b> <span class="badge">${l.status}</span><br>📞 ${l.phone||'-'} | 📍 ${l.source} | 💰 ${l.tarif}<br><small>${new Date(l.createdAt).toLocaleString('kk-KZ')}</small></div>`).join('')||'<p>Клиент жоқ</p>';
+};
+function updateReport(){
+  const paid=leads.filter(l=>l.status.includes('Төледі'));
+  let money=0, b=0,s=0,g=0;
+  paid.forEach(l=>{ if(l.tarif.includes('3000')){money+=3000;b++} if(l.tarif.includes('5000')){money+=5000;s++} if(l.tarif.includes('10000')){money+=10000;g++} });
+  document.getElementById('kTotal').innerText=leads.length;
+  document.getElementById('kPaid').innerText=paid.length;
+  document.getElementById('kMoney').innerText=money.toLocaleString()+' ₸';
+  document.getElementById('c-bronze').innerText=b;
+  document.getElementById('c-silver').innerText=s;
+  document.getElementById('c-gold').innerText=g;
+  document.getElementById('reportText').innerText=`📅 ${new Date().toLocaleDateString('kk-KZ')}\n👥 Барлығы: ${leads.length} клиент\n✅ Төлеген: ${paid.length}\n💰 Табыс: ${money}₸\n\nАйдана тапты: ${leads.length} клиент\nДанияр жапты: ${paid.length} сатылым\nМеруерт есептеді: дайын ✅`;
 }
-
-function safe(s){
- return String(s).replace(/[&<>"']/g,c=>({
- "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
- }[c]));
-}
-
-function save(){
- localStorage.setItem("ai_clients",JSON.stringify(clients));
- localStorage.setItem("ai_tasks",JSON.stringify(tasks));
- render();
-}
-
-function addClient(){
- let name=document.getElementById("clientName").value.trim();
- if(!name){alert("Клиент атын енгізіңіз");return}
- clients.push({
- name,contact:document.getElementById("contact").value.trim(),
- event:document.getElementById("event").value,
- price:Number(document.getElementById("price").value),
- status:"Жаңа клиент"
- });
- document.getElementById("clientName").value="";
- document.getElementById("contact").value="";
- save();
-}
-
-function addTask(){
- let agent=document.getElementById("agent").value;
- let task=document.getElementById("taskText").value.trim();
- if(!task)return;
- tasks.push({agent,task,done:false});
- document.getElementById("taskText").value="";
- save();
-}
-
-function showAgent(name){
- let d=document.getElementById("detail");
- d.style.display="block";
- d.innerHTML="<h3>👤 "+name+"</h3><p>"+descriptions[name]+"</p><p class='muted'>Тіркелген тапсырмалар: "+
- tasks.filter(t=>t.agent===name).length+"</p>";
-}
-
-function render(){
- document.getElementById("total").textContent=clients.length;
- document.getElementById("interested").textContent=
- clients.filter(x=>x.status==="Қызығушылық бар").length;
- let sold=clients.filter(x=>x.status==="Төленді");
- document.getElementById("sales").textContent=sold.length;
- document.getElementById("income").textContent=
- sold.reduce((s,x)=>s+x.price,0).toLocaleString("kk-KZ")+" ₸";
-
- document.getElementById("clientList").innerHTML=clients.map((x,i)=>`
- <tr>
- <td>${safe(x.name)}<br><small>${safe(x.contact)}</small></td>
- <td>${safe(x.event)}</td>
- <td>${x.price.toLocaleString("kk-KZ")} ₸</td>
- <td><select onchange="changeStatus(${i},this.value)">
- ${["Жаңа клиент","Қызығушылық бар","Ұсыныс жіберілді","Төленді","Бас тартты"].map(s=>
- `<option ${x.status===s?"selected":""}>${s}</option>`).join("")}
- </select></td></tr>`).join("");
-
- document.getElementById("taskList").innerHTML=tasks.map((t,i)=>`
- <div class="task">
- <b>${safe(t.agent)}</b> — ${safe(t.task)}
- <button class="secondary" onclick="finishTask(${i})">
- ${t.done?"Орындалды":"Аяқталды"}
- </button>
- </div>`).join("");
-}
-
-function changeStatus(i,s){clients[i].status=s;save()}
-function finishTask(i){tasks[i].done=true;save()}
-render();
+window.copyReport=()=>{ navigator.clipboard.writeText(document.getElementById('reportText').innerText); alert('Көшірілді!'); };
+window.sendAI=()=>{
+  const inp=document.getElementById('chatInput'); const text=inp.value.trim(); if(!text) return;
+  const chat=document.getElementById('chat'); chat.innerHTML+=`<div class="msg me">👤 ${text}</div>`;
+  let reply="Сәлеметсіз бе! 😊 Қандай тойға іздеп жүрсіз? Үйлену тойы ма?";
+  const t=text.toLowerCase();
+  if(t.includes('баға')||t.includes('қанша')||t.includes('тұрады')) reply="Қола — 3000₸, Күміс — 5000₸, Алтын — 10000₸. Алдымен ТЕГІН көріңіз, ұнаса ғана төлейсіз 😊 Қайсысы ұнайды?";
+  else if(t.includes('той')) reply="Құтты болсын! 🎉 Қай күні? Атыңызды жазыңыз, Айданаға жіберейін.";
+  else if(t.includes('иә')||t.includes('керек')||t.includes('жасай')) reply="Керемет! 👏 Атыңыз + той күнін жазыңыз, 5 минутта хабарласамыз.";
+  else if(t.includes('рахмет')) reply="Рақмет сізге! ✨ Тойыңыз қуанышты болсын!";
+  setTimeout(()=>{ chat.innerHTML+=`<div class="msg ai">🤖 Данияр: ${reply}</div>`; chat.scrollTop=chat.scrollHeight; },400);
+  inp.value='';
+};
 </script>
 </body>
 </html>
