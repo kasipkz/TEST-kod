@@ -111,7 +111,7 @@ pre.rep{margin:0 0 10px;padding:12px;background:#fff8e6;border:1px dashed #e0b85
 <select id="te"></select><textarea id="tx" rows="3" maxlength="200" placeholder="Тапсырма мәтінін жазыңыз..." style="margin-top:8px"></textarea>
 <button class="btn" id="tadd" style="width:100%;margin-top:8px">📤 Тапсырма беру</button><div id="tasks"></div></div>
 
-<div class="sec"><h2>💬 Данияр AI чаты (қазақша сатушы)</h2>
+<div class="sec"><h2>💬 Айсұлтан AI чаты (қазақша сатушы)</h2>
 <div class="chat" id="chat"></div>
 <div class="row" style="margin-top:8px;flex-wrap:nowrap"><input id="ci" placeholder="Хабарлама жазыңыз..." maxlength="200"><button class="btn" id="cs" style="flex:0 0 auto">Жіберу</button></div></div>
 
@@ -134,9 +134,9 @@ var PR={std:3000,prem:5000,vip:10000},TN={std:'Қола',prem:'Күміс',vip:'
 var EV=['Үйлену тойы','Қыз ұзату','Сүндет той','Бесік той','Мерейтой'];
 var ST=['Жаңа клиент','Қызығушылық бар','Ұсыныс жіберілді','Төленді','Бас тартты'];
 var EMP=[
-{id:'aidana',n:'Айдана',e:'👩‍💼',role:'Клиент іздеуші',c:'#ff8a3d',c2:'#ff5fa2',h:'#5a2f1a',def:'Жаңа клиенттерді іздеу',long:1},
-{id:'daniyar',n:'Данияр',e:'🤖',role:'Қазақша сатушы AI',c:'#2f6bff',c2:'#1d4ed8',h:'#1d1d1d',def:'Клиенттермен қазақша сөйлесу',long:0},
-{id:'meruert',n:'Меруерт',e:'👩‍💼',role:'Бас менеджер',c:'#ff4d9d',c2:'#d6247a',h:'#2b1b14',def:'Күндік есепті дайындау',long:1}];
+{id:'aidana',n:'Адина',e:'👩‍💼',role:'Клиент іздеуші',c:'#ff8a3d',c2:'#ff5fa2',h:'#5a2f1a',def:'Жаңа клиенттерді іздеу',long:1},
+{id:'daniyar',n:'Айсұлтан',e:'🤖',role:'Қазақша сатушы AI',c:'#2f6bff',c2:'#1d4ed8',h:'#1d1d1d',def:'Клиенттермен қазақша сөйлесу',long:0},
+{id:'meruert',n:'Альбина',e:'👩‍💼',role:'Бас менеджер',c:'#ff4d9d',c2:'#d6247a',h:'#2b1b14',def:'Күндік есепті дайындау',long:1}];
 function toast(m){var t=$('toast');t.textContent=m;t.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(function(){t.style.display='none'},2800)}
 function el(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e}
 function money(n){return n.toLocaleString('ru-RU').replace(/\u00a0/g,' ')+' ₸'}
