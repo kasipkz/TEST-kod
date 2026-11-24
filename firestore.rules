@@ -1,0 +1,9 @@
+// Firestore Security Rules — ТЕК "aiOffice" бөлімі үшін.
+// МАҢЫЗДЫ: бұрынғы ережелеріңізді (такси жобасы) ӨШІРМЕҢІЗ. Мына блокты ескі ережелердің ішіне, "match /databases/{database}/documents { ... }" ішіне ҚОСЫҢЫЗ.
+// OWNER_EMAIL орнына өз email-іңізді жазыңыз (Firebase Authentication-да сол email-мен пайдаланушы жасаңыз).
+
+    match /aiOffice/crm/{col}/{doc} {
+      allow read, write: if request.auth != null
+                         && request.auth.token.email == "OWNER_EMAIL@gmail.com"
+                         && col in ['leads', 'tasks', 'sales', 'agents', 'proposals', 'settings'];
+    }
