@@ -139,11 +139,11 @@ function sb(path,method,body){
 }
 var DB=(function(){
   function toObj(arr){var o={};(arr||[]).forEach(function(v){o[v.id]=v});return o}
-  function poll(p,cb){ sb(p+"?select=*&order=createdAt.desc").then(function(d){ cb(toObj(d)); }).catch(function(){}); }
+  function poll(p,cb){ sb(p+"?select=*&order=createdAt.desc").then(function(d){ if(Array.isArray(d)) cb(toObj(d)); }).catch(function(){}); }
   return{
     mode:function(){return "sb"},
     on:function(p,cb){ poll(p,cb); setInterval(function(){poll(p,cb)},3000); },
-    push:function(p,o){ return sb(p,"POST",o); },
+    push:function(p,o){ if(!o.id) o.id=Date.now().toString(36)+Math.random().toString(36).slice(2,7); if(!o.createdAt) o.createdAt=Date.now(); return sb(p,"POST",o); },
     update:function(p,id,o){ return sb(p+"?id=eq."+id,"PATCH",o); },
     remove:function(p,id){ return sb(p+"?id=eq."+id,"DELETE"); }
   };
