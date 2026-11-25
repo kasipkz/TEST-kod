@@ -123,44 +123,33 @@ pre.rep{margin:0 0 10px;padding:12px;background:#fff8e6;border:1px dashed #e0b85
 <div class="ov" id="ov"><div class="card" id="cd"></div></div>
 <div id="toast"></div>
 
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 <script>
 /* ===================== QOSSHY JOLY • AI SALES DEPARTMENT ===================== */
 (function(){
 'use strict';
 var $=function(i){return document.getElementById(i)};
-var CFG={apiKey:"AIzaSyBmuNU_hM7ZwdnpEGt200s_C8HYcwdZsW8",authDomain:"qosshy-joly.firebaseapp.com",databaseURL:"https://qosshy-joly-default-rtdb.firebaseio.com",projectId:"qosshy-joly",storageBucket:"qosshy-joly.firebasestorage.app",messagingSenderId:"43683240461",appId:"1:43683240461:web:a439eab5d26e81b71a5344"};
-var PR={std:3000,prem:5000,vip:10000},TN={std:'Қола',prem:'Күміс',vip:'Алтын'};
-var EV=['Үйлену тойы','Қыз ұзату','Сүндет той','Бесік той','Мерейтой'];
-var ST=['Жаңа клиент','Қызығушылық бар','Ұсыныс жіберілді','Төленді','Бас тартты'];
-var EMP=[
-{id:'aidana',n:'Айдана',e:'👩‍💼',role:'Клиент іздеуші',c:'#ff8a3d',c2:'#ff5fa2',h:'#5a2f1a',def:'Жаңа клиенттерді іздеу',long:1},
-{id:'daniyar',n:'Данияр',e:'🤖',role:'Қазақша сатушы AI',c:'#2f6bff',c2:'#1d4ed8',h:'#1d1d1d',def:'Клиенттермен қазақша сөйлесу',long:0},
-{id:'meruert',n:'Меруерт',e:'👩‍💼',role:'Бас менеджер',c:'#ff4d9d',c2:'#d6247a',h:'#2b1b14',def:'Күндік есепті дайындау',long:1}];
-function toast(m){var t=$('toast');t.textContent=m;t.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(function(){t.style.display='none'},2800)}
-function el(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e}
-function money(n){return n.toLocaleString('ru-RU').replace(/\u00a0/g,' ')+' ₸'}
-function dayStart(){var d=new Date();d.setHours(0,0,0,0);return d.getTime()}
-
-/* ---------- Деректер қабаты: Firebase Realtime Database (қате болса — құрылғы жады) ---------- */
+var SB_URL="https://sphlfqwqqogzugvqytyz.supabase.co";
+var SB_KEY="sb_publishable_1Y0_6Tp4czsnNNaIMYF1Ww_z4xzeQqD";
+function sb(path,method,body){
+  return fetch(SB_URL+"/rest/v1/"+path,{
+    method:method||"GET",
+    headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"return=representation"},
+    body:body?JSON.stringify(body):undefined
+  }).then(function(r){return r.json()});
+}
 var DB=(function(){
-var fb=null,mode='local',L={},store={};
-try{if(window.firebase){firebase.initializeApp(CFG);fb=firebase.database();mode='fb'}}catch(e){fb=null}
-function lk(p){return 'qj_'+p}
-function lload(p){try{return JSON.parse(localStorage.getItem(lk(p))||'{}')}catch(e){return{}}}
-function lsave(p,o){try{localStorage.setItem(lk(p),JSON.stringify(o))}catch(e){}}
-function lfire(p){(L[p]||[]).forEach(function(cb){cb(lload(p))})}
-window.addEventListener('storage',function(e){if(e.key&&e.key.indexOf('qj_')===0)lfire(e.key.slice(3))});
-function listenLocal(p,cb){(L[p]=L[p]||[]).push(cb);cb(lload(p))}
-return{
- mode:function(){return mode},
- on:function(p,cb){if(!fb){listenLocal(p,cb);return}
-  fb.ref(p).on('value',function(s){store[p]=s.val()||{};cb(store[p])},function(err){mode='local';listenLocal(p,cb);status();toast('⚠️ Firebase рұқсат бермеді (Rules тексеріңіз). Құрылғы жады қолданылады.')})},
- push:function(p,o){if(mode==='fb'&&fb){return fb.ref(p).push(o).catch(function(){toast('⚠️ Firebase-ке жазылмады')})}var d=lload(p),id='l'+Date.now()+Math.floor(Math.random()*999);d[id]=o;lsave(p,d);lfire(p);return Promise.resolve()},
- update:function(p,id,o){if(mode==='fb'&&fb){return fb.ref(p+'/'+id).update(o)}var d=lload(p);if(d[id]){Object.assign(d[id],o);lsave(p,d);lfire(p)}return Promise.resolve()},
- remove:function(p,id){if(mode==='fb'&&fb){return fb.ref(p+'/'+id).remove()}var d=lload(p);delete d[id];lsave(p,d);lfire(p);return Promise.resolve()}}})();
-function status(){var m=DB.mode();$('cn').textContent=m==='fb'?'🟢 Firebase қосылған':'🟡 Офлайн режим';$('cn').title=m==='fb'?'Деректер Firebase-те сақталады':'Деректер осы құрылғыда сақталады'}
+  function toObj(arr){var o={};(arr||[]).forEach(function(v){o[v.id]=v});return o}
+  function poll(p,cb){ sb(p+"?select=*&order=createdAt.desc").then(function(d){ cb(toObj(d)); }).catch(function(){}); }
+  return{
+    mode:function(){return "sb"},
+    on:function(p,cb){ poll(p,cb); setInterval(function(){poll(p,cb)},3000); },
+    push:function(p,o){ return sb(p,"POST",o); },
+    update:function(p,id,o){ return sb(p+"?id=eq."+id,"PATCH",o); },
+    remove:function(p,id){ return sb(p+"?id=eq."+id,"DELETE"); }
+  };
+})();
+function status(){ $('cn').textContent='🟢 Supabase қосылған'; }
+status();={var m=DB.mode();$('cn').textContent=m==='fb'?'🟢 Firebase қосылған':'🟡 Офлайн режим';$('cn').title=m==='fb'?'Деректер Firebase-те сақталады':'Деректер осы құрылғыда сақталады'}
 status();
 
 /* ---------- Күй ---------- */
