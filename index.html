@@ -149,9 +149,22 @@ var DB=(function(){
   };
 })();
 function status(){ $('cn').textContent='🟢 Supabase қосылған'; }
-status();={var m=DB.mode();$('cn').textContent=m==='fb'?'🟢 Firebase қосылған':'🟡 Офлайн режим';$('cn').title=m==='fb'?'Деректер Firebase-те сақталады':'Деректер осы құрылғыда сақталады'}
 status();
 
+/* ---------- Көмекшілер ---------- */
+function el(t,c,txt){ var e=document.createElement(t); if(c) e.className=c; if(txt!=null) e.textContent=txt; return e; }
+function money(n){ return (n||0).toLocaleString('ru-RU')+' ₸'; }
+function dayStart(){ var d=new Date(); d.setHours(0,0,0,0); return d.getTime(); }
+var EV=['Үйлену тойы','Қыз ұзату','Сүндет той','Туған күн','Мерейтой','Басқа'];
+var ST=['Қызығушылық бар','Ұсыныс жіберілді','Төленді','Бас тартты'];
+var TN={std:'Қола',prem:'Күміс',vip:'Алтын'};
+var PR={std:3000,prem:5000,vip:10000};
+var EMP=[
+ {id:'meruert',e:'👩',n:'Меруерт',role:'Менеджер',c:'#ff4d9d',def:'Клиенттермен жұмыс'},
+ {id:'daniyar',e:'👨',n:'Данияр',role:'Сатушы AI',c:'#2f6bff',def:'Клиенттерге жауап беру'},
+ {id:'aidana',e:'👩',n:'Айдана',role:'Дизайнер',c:'#ff7a3d',def:'Дизайн жасау'},
+ {id:'free',e:'🪑',n:'Бос орын',role:'',c:'#9aa3b5',def:''}
+];
 /* ---------- Күй ---------- */
 var leads=[],tasks=[],flt='all';
 function arr(o){return Object.keys(o||{}).map(function(k){var v=o[k];v.id=k;return v}).filter(function(v){return v&&typeof v==='object'})}
